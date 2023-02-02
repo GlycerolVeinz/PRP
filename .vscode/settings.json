@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "pq_heap.h": "c",
+        "math.h": "c",
+        "time.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    }
+}

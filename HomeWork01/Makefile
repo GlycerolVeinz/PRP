@@ -1,0 +1,58 @@
+
+# CC:=ccache $(CC)
+CC=clang
+CFLAGS+=-O2
+CFLAGS+=-pedantic -Wall -Werror
+LDFLAGS+=-lm
+
+OS:=$(shell uname)
+
+ifeq ($(OS),Linux)
+   CFLAGS+=-std=gnu99
+   LDFLAGS+=-lrt
+endif
+
+#OBJS=$(patsubst %.c,%.o,$(wildcard *.c))
+OBJS=\
+     dijkstra.o\
+     my_malloc.o\
+     graph_utils.o\
+     pq_heap-no_update.o\
+     load_simple.o\
+   #   test.o
+
+TARGET=tgraph_search
+
+TARGET_TIME=tgraph_search-time
+
+TARGET_TEST=test
+
+OBJS_ALL=$(OBJS)
+OBJS_ALL+=$(TARGET).o 
+OBJS_ALL+=$(TARGET_TIME).o
+
+
+# all: test
+all: bin time
+
+bin: $(TARGET)
+
+time: $(TARGET_TIME)
+
+
+
+$(OBJS_ALL): %.o: %.c
+	$(CC) -c $< $(CFLAGS) $(CPPFLAGS) -o $@
+
+$(TARGET): $(OBJS_ALL)
+	$(CC) $(OBJS) $@.o $(LDFLAGS) -o $@ 
+
+$(TARGET_TIME): $(OBJS_ALL)
+	$(CC) $(OBJS) $@.o $(LDFLAGS) -o $@ 
+
+test: $(OBJS_ALL)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@ 
+
+clean:
+	$(RM) $(OBJS_ALL) $(TARGET) $(TARGET_TIME) $(TARGET_TIME)
+
